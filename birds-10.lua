@@ -4,7 +4,7 @@ local IMG = require "SDL.image"
 require "atmos"
 local env = require "atmos.env.sdl"
 
-local point_vs_rect = env.pont_vs_rect
+local point_vs_rect = env.point_vs_rect
 
 local _ <close> = defer(function ()
     IMG.quit()
@@ -114,9 +114,9 @@ spawn(function ()
         function ()
             while true do
                 local bird = catch ('Track', function ()
-                    every (SDL.event.MouseButtonDn, function ()
-                        for _,b in birds do
-                            if b.pub.alive and point_vs_rect(evt,b.pub.rect) then
+                    every (SDL.event.MouseButtonDown, function (evt)
+                        for _,b in getmetatable(birds).__pairs(birds) do
+                            if pub(b).alive and point_vs_rect(evt,pub(b).rect) then
                                 throw { 'Track', b }
                             end
                         end
@@ -131,6 +131,7 @@ spawn(function ()
                         l.y2 = pub(bird).rect.y + (H/2)
                         REN:setDrawColor(0xFFFFFFFF)
                         REN:drawLine(l)
+                        REN:setDrawColor(0x00000000)
                     end)
                 end)
             end
