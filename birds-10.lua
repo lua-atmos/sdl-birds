@@ -113,11 +113,11 @@ spawn(function ()
         end,
         function ()
             while true do
-                local bird = catch ('Track', function ()
+                local _,_,bird = catch ('Track', function ()
                     every (SDL.event.MouseButtonDown, function (evt)
                         for _,b in getmetatable(birds).__pairs(birds) do
                             if pub(b).alive and point_vs_rect(evt,pub(b).rect) then
-                                throw { 'Track', b }
+                                throw('Track', b)
                             end
                         end
                     end)
