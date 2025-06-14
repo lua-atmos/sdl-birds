@@ -64,22 +64,11 @@ function Bird (y, speed)
 end
 
 spawn(function ()
-    every('SDL.Draw', function ()
-        REN:setDrawColor(0x000000)
-        REN:clear()
-    end)
-end)
-spawn(function ()
     while true do
         local _ <close> = spawn(Bird, 150, 100)
         local _ <close> = spawn(Bird, 350, 200)
         await(SDL.event.MouseButtonDown)
     end
 end)
-spawn(function ()
-    every('SDL.Draw', function ()
-        REN:present()
-    end)
-end)
 
-env.loop()
+env.loop(REN)

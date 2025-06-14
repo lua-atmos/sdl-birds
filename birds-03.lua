@@ -64,22 +64,11 @@ function Bird (y, speed)
 end
 
 spawn(function ()
-    every('SDL.Draw', function ()
-        REN:setDrawColor(0x000000)
-        REN:clear()
-    end)
-end)
-spawn(function ()
     local birds = tasks()
     for i=0, 4 do
         spawn_in(birds, Bird, 100*i, 100 + 10*i)
     end
     await(false)
 end)
-spawn(function ()
-    every('SDL.Draw', function ()
-        REN:present()
-    end)
-end)
 
-env.loop()
+env.loop(REN)
