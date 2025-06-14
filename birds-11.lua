@@ -92,7 +92,7 @@ end
 
 spawn(function ()
     par (function ()
-        toggle('Draw', function ()
+        toggle('Show', function ()
             local birds <close> = tasks(5)
             par (
                 function ()
