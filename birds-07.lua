@@ -38,7 +38,7 @@ math.randomseed()
 
 function Bird (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
-    pub().rect = rect
+    me().rect = rect
     local img = DN
     watching(true, function(it) return rect.x>640 or it=='collided' end, function ()
         par (
@@ -74,7 +74,7 @@ spawn(function ()
             every ('step', function (ms)
                 for _,b1 in getmetatable(birds).__pairs(birds) do
                     for _,b2 in getmetatable(birds).__pairs(birds) do
-                        local col = (b1~=b2) and SDL.hasIntersection(pub(b1).rect, pub(b2).rect)
+                        local col = (b1~=b2) and SDL.hasIntersection(b1.rect, b2.rect)
                         if col then
                             emit_in(b1, 'collided')
                             emit_in(b2, 'collided')

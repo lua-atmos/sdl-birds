@@ -40,8 +40,8 @@ math.randomseed()
 
 function Bird (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
-    pub().rect  = rect
-    pub().alive = true
+    me().rect  = rect
+    me().alive = true
     local img = DN
     watching(true, function(it) return rect.x>640 end, function ()
         watching('collided', function ()
@@ -64,7 +64,7 @@ function Bird (y, speed)
                 end
             )
         end)
-        pub().alive = false
+        me().alive = false
         watching(true, function () return rect.y>480-H end, function ()
             par(function ()
                 every('step', function (ms)
@@ -101,7 +101,7 @@ spawn(function ()
             every ('step', function (ms)
                 for _,b1 in getmetatable(birds).__pairs(birds) do
                     for _,b2 in getmetatable(birds).__pairs(birds) do
-                        local col = (b1~=b2) and pub(b1).alive and pub(b2).alive and SDL.hasIntersection(pub(b1).rect, pub(b2).rect)
+                        local col = (b1~=b2) and b1.alive and b2.alive and SDL.hasIntersection(b1.rect, b2.rect)
                         if col then
                             emit_in(b1, 'collided')
                             emit_in(b2, 'collided')
@@ -116,7 +116,7 @@ spawn(function ()
                 local _,_,bird = catch ('Track', function ()
                     every (SDL.event.MouseButtonDown, function (evt)
                         for _,b in getmetatable(birds).__pairs(birds) do
-                            if pub(b).alive and point_vs_rect(evt,pub(b).rect) then
+                            if b.alive and point_vs_rect(evt,b.rect) then
                                 throw('Track', b)
                             end
                         end
@@ -127,8 +127,8 @@ spawn(function ()
                         x1=640/2, y1=480,
                     }
                     every ('SDL.Draw', function ()
-                        l.x2 = pub(bird).rect.x + (W/2)
-                        l.y2 = pub(bird).rect.y + (H/2)
+                        l.x2 = bird.rect.x + (W/2)
+                        l.y2 = bird.rect.y + (H/2)
                         REN:setDrawColor(0xFFFFFFFF)
                         REN:drawLine(l)
                         REN:setDrawColor(0x00000000)
