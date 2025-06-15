@@ -144,6 +144,7 @@ spawn(function ()
     end, function ()
         while true do
             await(SDL.event.KeyDown, function (e) return evt_vs_key(e,'P') end)
+            emit('Show', false)
             watching(SDL.event.KeyDown, function (e) return evt_vs_key(e,'P') end, function ()
                 local sfc = assert(IMG.load("res/pause.png"))
                 local img = assert(REN:createTextureFromSurface(sfc))
