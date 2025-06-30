@@ -40,11 +40,11 @@ function Bird (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
     me().rect = rect
     local img = DN
-    watching(true, function(it) return rect.x>640 or it=='collided' end, function ()
+    watching(function(it) return rect.x>640 or it=='collided' end, function ()
         par (
             function ()
                 local ang = 0
-                every('step', function (ms)
+                every('step', function (_,ms)
                     local v = ms * speed
                     rect.x = math.floor(rect.x + (v/1000))
                     rect.y = math.floor(y - ((speed/5) * math.sin(ang)))
@@ -54,7 +54,7 @@ function Bird (y, speed)
                 end)
             end,
             function ()
-                every('SDL.Draw', function ()
+                every('sdl.draw', function ()
                     REN:copy(img, nil, rect)
                 end)
             end
@@ -62,7 +62,7 @@ function Bird (y, speed)
     end)
 end
 
-spawn(function ()
+call(REN, function ()
     local birds <close> = tasks(5)
     par (
         function ()
@@ -71,7 +71,7 @@ spawn(function ()
             end)
         end,
         function ()
-            every ('step', function (ms)
+            every ('step', function (_,ms)
                 for _,b1 in getmetatable(birds).__pairs(birds) do
                     for _,b2 in getmetatable(birds).__pairs(birds) do
                         local col = (b1~=b2) and SDL.hasIntersection(b1.rect, b2.rect)
@@ -86,5 +86,3 @@ spawn(function ()
         end
     )
 end)
-
-env.loop(REN)

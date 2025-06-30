@@ -41,7 +41,7 @@ function Bird (y, speed)
     par (
         function ()
             local ang = 0
-            every('step', function (ms)
+            every('step', function (_,ms)
                 local v = ms * speed
                 xx = xx + (v/1000)
                 yy = y - ((speed/5) * math.sin(ang))
@@ -51,7 +51,7 @@ function Bird (y, speed)
             end)
         end,
         function ()
-            every('SDL.Draw', function ()
+            every('sdl.draw', function ()
                 REN:copy(img, nil, {
                     x = math.floor(xx),
                     y = math.floor(yy),
@@ -63,12 +63,10 @@ function Bird (y, speed)
     )
 end
 
-spawn(function ()
+call(REN, function ()
     local birds = tasks()
     for i=0, 4 do
         spawn_in(birds, Bird, 100*i, 100 + 10*i)
     end
     await(false)
 end)
-
-env.loop(REN)

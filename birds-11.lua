@@ -44,12 +44,12 @@ function Bird (y, speed)
     me().rect  = rect
     me().alive = true
     local img = DN
-    watching(true, function(it) return rect.x>640 end, function ()
+    watching(function(it) return rect.x>640 end, function ()
         watching('collided', function ()
             par (
                 function ()
                     local ang = 0
-                    every('step', function (ms)
+                    every('step', function (_,ms)
                         local v = ms * speed
                         rect.x = math.floor(rect.x + (v/1000))
                         rect.y = math.floor(y - ((speed/5) * math.sin(ang)))
@@ -59,20 +59,20 @@ function Bird (y, speed)
                     end)
                 end,
                 function ()
-                    every('SDL.Draw', function ()
+                    every('sdl.draw', function ()
                         REN:copy(img, nil, rect)
                     end)
                 end
             )
         end)
         me().alive = false
-        watching(true, function () return rect.y>480-H end, function ()
+        watching(function () return rect.y>480-H end, function ()
             par(function ()
-                every('step', function (ms)
+                every('step', function (_,ms)
                     rect.y = math.floor(rect.y + (ms * 0.5))
                 end)
             end, function ()
-                every('SDL.Draw', function ()
+                every('sdl.draw', function ()
                     REN:copy(DN, nil, rect)
                 end)
             end)
@@ -81,7 +81,7 @@ function Bird (y, speed)
             while true do
                 await(clock{ms=100})
                 watching(clock{ms=100}, function ()
-                    every('SDL.Draw', function ()
+                    every('sdl.draw', function ()
                         REN:copy(DN, nil, rect)
                     end)
                 end)
@@ -90,7 +90,7 @@ function Bird (y, speed)
     end)
 end
 
-spawn(function ()
+call(REN, function ()
     par (function ()
         toggle('Show', function ()
             local birds <close> = tasks(5)
@@ -129,7 +129,7 @@ spawn(function ()
                             local l = {
                                 x1=640/2, y1=480,
                             }
-                            every ('SDL.Draw', function ()
+                            every ('sdl.draw', function ()
                                 l.x2 = bird.rect.x + (W/2)
                                 l.y2 = bird.rect.y + (H/2)
                                 REN:setDrawColor(0xFFFFFFFF)
@@ -154,7 +154,7 @@ spawn(function ()
                     y = math.floor(480/2 - h/2),
                     w=w, h=h
                 }
-                every('SDL.Draw', function ()
+                every('sdl.draw', function ()
                     REN:copy(img, nil, r)
                 end)
             end)
@@ -162,5 +162,3 @@ spawn(function ()
         end
     end)
 end)
-
-env.loop(REN)

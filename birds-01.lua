@@ -1,8 +1,7 @@
 local SDL = require "SDL"
 local IMG = require "SDL.image"
 
-require "atmos"
-local env = require "atmos.env.sdl"
+require "atmos.env.sdl"
 
 local _ <close> = defer(function ()
     IMG.quit()
@@ -41,7 +40,7 @@ function Bird (y, speed)
     par (
         function ()
             local ang = 0
-            every('step', function (ms)
+            every('step', function (_,ms)
                 local v = ms * speed
                 xx = xx + (v/1000)
                 yy = y - ((speed/5) * math.sin(ang))
@@ -51,7 +50,7 @@ function Bird (y, speed)
             end)
         end,
         function ()
-            every('SDL.Draw', function ()
+            every('sdl.draw', function ()
                 REN:copy(img, nil, {
                     x = math.floor(xx),
                     y = math.floor(yy),
@@ -63,7 +62,8 @@ function Bird (y, speed)
     )
 end
 
-spawn(Bird, 150, 100)
-spawn(Bird, 350, 200)
-
-env.loop(REN)
+call(REN, function ()
+    spawn(Bird, 150, 100)
+    spawn(Bird, 350, 200)
+    await(false)
+end)

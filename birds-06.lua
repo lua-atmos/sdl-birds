@@ -40,11 +40,11 @@ function Bird (y, speed)
     local xx  = 0
     local yy  = y
     local img = DN
-    watching(true, function() return xx>640 end, function ()
+    watching(function() return xx>640 end, function ()
         par (
             function ()
                 local ang = 0
-                every('step', function (ms)
+                every('step', function (_,ms)
                     local v = ms * speed
                     xx = xx + (v/1000)
                     yy = y - ((speed/5) * math.sin(ang))
@@ -54,7 +54,7 @@ function Bird (y, speed)
                 end)
             end,
             function ()
-                every('SDL.Draw', function ()
+                every('sdl.draw', function ()
                     REN:copy(img, nil, {
                         x = math.floor(xx),
                         y = math.floor(yy),
@@ -67,7 +67,7 @@ function Bird (y, speed)
     end)
 end
 
-spawn(function ()
+call(REN, function ()
     while true do
         watching(SDL.event.MouseButtonDown, function ()
             local birds <close> = tasks(5)
@@ -77,5 +77,3 @@ spawn(function ()
         end)
     end
 end)
-
-env.loop(REN)
