@@ -41,8 +41,8 @@ math.randomseed()
 
 function Bird (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
-    me().rect  = rect
-    me().alive = true
+    task().rect  = rect
+    task().alive = true
     local img = DN
     watching(function(it) return rect.x>640 end, function ()
         watching('collided', function ()
@@ -65,7 +65,7 @@ function Bird (y, speed)
                 end
             )
         end)
-        me().alive = false
+        task().alive = false
         watching(function () return rect.y>480-H end, function ()
             par(function ()
                 every('step', function (_,ms)

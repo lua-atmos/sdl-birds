@@ -38,7 +38,7 @@ math.randomseed()
 
 function Bird (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
-    me().rect = rect
+    task().rect = rect
     local img = DN
     watching(function(it) return rect.x>640 or it=='collided' end, function ()
         par (
