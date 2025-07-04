@@ -49,7 +49,7 @@ function Bird (y, speed)
             par (
                 function ()
                     local ang = 0
-                    every('step', function (_,ms)
+                    every('sdl.step', function (_,ms)
                         local v = ms * speed
                         rect.x = math.floor(rect.x + (v/1000))
                         rect.y = math.floor(y - ((speed/5) * math.sin(ang)))
@@ -68,7 +68,7 @@ function Bird (y, speed)
         task().alive = false
         watching(function () return rect.y>480-H end, function ()
             par(function ()
-                every('step', function (_,ms)
+                every('sdl.step', function (_,ms)
                     rect.y = math.floor(rect.y + (ms * 0.5))
                 end)
             end, function ()
@@ -101,7 +101,7 @@ call(REN, function ()
                     end)
                 end,
                 function ()
-                    every ('step', function (ms)
+                    every ('sdl.step', function (ms)
                         for _,b1 in getmetatable(birds).__pairs(birds) do
                             for _,b2 in getmetatable(birds).__pairs(birds) do
                                 local col = (b1~=b2) and b1.alive and b2.alive and SDL.hasIntersection(b1.rect, b2.rect)

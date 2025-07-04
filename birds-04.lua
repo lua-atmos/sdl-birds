@@ -43,7 +43,7 @@ function Bird (y, speed)
     par (
         function ()
             local ang = 0
-            every('step', function (_,ms)
+            every('sdl.step', function (_,ms)
                 local v = ms * speed
                 xx = xx + (v/1000)
                 yy = y - ((speed/5) * math.sin(ang))
