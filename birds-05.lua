@@ -1,8 +1,7 @@
 local SDL = require "SDL"
 local IMG = require "SDL.image"
 
-require "atmos"
-local env = require "atmos.env.sdl"
+local sdl = require "atmos.env.sdl"
 
 local _ <close> = defer(function ()
     IMG.quit()
@@ -67,7 +66,8 @@ function Bird (y, speed)
     end)
 end
 
-call(REN, function ()
+sdl.ren = REN
+call(function ()
     local birds = tasks(5)
     every (clock{ms=500}, function ()
         spawn_in(birds, Bird, math.random(0,480), 100 + math.random(0,100))

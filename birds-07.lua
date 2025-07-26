@@ -1,8 +1,7 @@
 local SDL = require "SDL"
 local IMG = require "SDL.image"
 
-require "atmos"
-local env = require "atmos.env.sdl"
+local sdl = require "atmos.env.sdl"
 
 local _ <close> = defer(function ()
     IMG.quit()
@@ -10,7 +9,7 @@ local _ <close> = defer(function ()
 end)
 
 local WIN = assert(SDL.createWindow {
-	title  = "Birds - 07 (iterator)",
+	title  = "Birds - 07 (collision)",
 	width  = 640,
 	height = 480,
     flags  = { SDL.flags.OpenGL },
@@ -62,7 +61,8 @@ function Bird (y, speed)
     end)
 end
 
-call(REN, function ()
+sdl.ren = REN
+call(function ()
     local birds <close> = tasks(5)
     par (
         function ()
