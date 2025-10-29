@@ -1,14 +1,8 @@
+local sdl = require "atmos.env.sdl"
 local SDL = require "SDL"
 local IMG = require "SDL.image"
 
-local sdl = require "atmos.env.sdl"
-
 local point_vs_rect = sdl.point_vs_rect
-
-local _ <close> = defer(function ()
-    IMG.quit()
-    SDL.quit()
-end)
 
 local WIN = assert(SDL.createWindow {
 	title  = "Birds - 10 (tracking)",
