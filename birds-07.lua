@@ -39,8 +39,8 @@ function Bird (y, speed)
                 local ang = 0
                 every('clock', function (_,ms)
                     local v = ms * speed
-                    rect.x = math.floor(rect.x + (v/1000))
-                    rect.y = math.floor(y - ((speed/5) * math.sin(ang)))
+                    rect.x = rect.x + (v/1000)
+                    rect.y = y - ((speed/5) * math.sin(ang))
                     ang = ang + ((3.14*v)/100000)
                     local tmp = math.floor(((ang+(3.14/2))/3.14))
                     img = (tmp%2 == 0) and UP or DN
@@ -48,7 +48,7 @@ function Bird (y, speed)
             end,
             function ()
                 every('sdl.draw', function ()
-                    REN:copy(img, nil, rect)
+                    REN:copy(img, nil, sdl.ints(rect))
                 end)
             end
         )
@@ -68,7 +68,7 @@ call(function ()
             every ('clock', function (_,ms)
                 for _,b1 in getmetatable(birds).__pairs(birds) do
                     for _,b2 in getmetatable(birds).__pairs(birds) do
-                        local col = (b1~=b2) and SDL.hasIntersection(b1.rect, b2.rect)
+                        local col = (b1~=b2) and SDL.hasIntersection(sdl.ints(b1.rect), sdl.ints(b2.rect))
                         if col then
                             emit_in(b1, 'collided')
                             emit_in(b2, 'collided')

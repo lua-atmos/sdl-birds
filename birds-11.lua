@@ -44,8 +44,8 @@ function Bird (y, speed)
                     local ang = 0
                     every('clock', function (_,ms)
                         local v = ms * speed
-                        rect.x = math.floor(rect.x + (v/1000))
-                        rect.y = math.floor(y - ((speed/5) * math.sin(ang)))
+                        rect.x = rect.x + (v/1000)
+                        rect.y = y - ((speed/5) * math.sin(ang))
                         ang = ang + ((3.14*v)/100000)
                         local tmp = math.floor(((ang+(3.14/2))/3.14))
                         img = (tmp%2 == 0) and UP or DN
@@ -53,7 +53,7 @@ function Bird (y, speed)
                 end,
                 function ()
                     every('sdl.draw', function ()
-                        REN:copy(img, nil, rect)
+                        REN:copy(img, nil, sdl.ints(rect))
                     end)
                 end
             )
@@ -62,11 +62,11 @@ function Bird (y, speed)
         watching(function () return rect.y>480-H end, function ()
             par(function ()
                 every('clock', function (_,ms)
-                    rect.y = math.floor(rect.y + (ms * 0.5))
+                    rect.y = rect.y + (ms * 0.5)
                 end)
             end, function ()
                 every('sdl.draw', function ()
-                    REN:copy(DN, nil, rect)
+                    REN:copy(DN, nil, sdl.ints(rect))
                 end)
             end)
         end)
@@ -75,7 +75,7 @@ function Bird (y, speed)
                 await(clock{ms=100})
                 watching(clock{ms=100}, function ()
                     every('sdl.draw', function ()
-                        REN:copy(DN, nil, rect)
+                        REN:copy(DN, nil, sdl.ints(rect))
                     end)
                 end)
             end
@@ -98,7 +98,7 @@ call(function ()
                     every ('clock', function (ms)
                         for _,b1 in getmetatable(birds).__pairs(birds) do
                             for _,b2 in getmetatable(birds).__pairs(birds) do
-                                local col = (b1~=b2) and b1.alive and b2.alive and SDL.hasIntersection(b1.rect, b2.rect)
+                                local col = (b1~=b2) and b1.alive and b2.alive and SDL.hasIntersection(sdl.ints(b1.rect), sdl.ints(b2.rect))
                                 if col then
                                     emit_in(b1, 'collided')
                                     emit_in(b2, 'collided')
@@ -127,7 +127,7 @@ call(function ()
                                 l.x2 = bird.rect.x + (W/2)
                                 l.y2 = bird.rect.y + (H/2)
                                 REN:setDrawColor(0xFFFFFFFF)
-                                REN:drawLine(l)
+                                REN:drawLine(sdl.ints(l))
                                 REN:setDrawColor(0x00000000)
                             end)
                         end)
@@ -144,12 +144,12 @@ call(function ()
                 local img = assert(REN:createTextureFromSurface(sfc))
                 local _,_,w,h = img:query()
                 local r = {
-                    x = math.floor(640/2 - w/2),
-                    y = math.floor(480/2 - h/2),
+                    x = 640/2 - w/2,
+                    y = 480/2 - h/2,
                     w=w, h=h
                 }
                 every('sdl.draw', function ()
-                    REN:copy(img, nil, r)
+                    REN:copy(img, nil, sdl.ints(r))
                 end)
             end)
             emit('Show', true)

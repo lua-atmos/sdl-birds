@@ -49,7 +49,7 @@ function Bird (y, speed)
                     x = math.floor(xx),
                     y = math.floor(yy),
                     w = W,
-                    h = H
+                    h = H,
                 })
             end)
         end
