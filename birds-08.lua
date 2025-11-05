@@ -2,13 +2,12 @@ local sdl = require "atmos.env.sdl"
 local SDL = require "SDL"
 local IMG = require "SDL.image"
 
-local WIN = assert(SDL.createWindow {
+local _,REN = sdl.window {
 	title  = "Birds - 08 (fall)",
 	width  = 640,
 	height = 480,
     flags  = { SDL.flags.OpenGL },
-})
-local REN = assert(SDL.createRenderer(WIN,-1))
+}
 
 local UP; do
     local sfc = assert(IMG.load("res/bird-up.png"))

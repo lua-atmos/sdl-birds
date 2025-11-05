@@ -4,13 +4,12 @@ local IMG = require "SDL.image"
 
 local point_vs_rect = sdl.point_vs_rect
 
-local WIN = assert(SDL.createWindow {
+local _,REN = sdl.window {
 	title  = "Birds - 10 (tracking)",
 	width  = 640,
 	height = 480,
     flags  = { SDL.flags.OpenGL },
-})
-local REN = assert(SDL.createRenderer(WIN,-1))
+}
 
 local UP; do
     local sfc = assert(IMG.load("res/bird-up.png"))
