@@ -56,7 +56,7 @@ function Bird (y, speed)
 end
 
 sdl.ren = REN
-call(function ()
+loop(function ()
     local birds = tasks()
     for i=0, 4 do
         spawn_in(birds, Bird, 100*i, 100 + 10*i)

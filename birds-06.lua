@@ -60,7 +60,7 @@ function Bird (y, speed)
 end
 
 sdl.ren = REN
-call(function ()
+loop(function ()
     while true do
         watching(SDL.event.MouseButtonDown, function ()
             local birds <close> = tasks(5)

@@ -56,7 +56,7 @@ function Bird (y, speed)
 end
 
 sdl.ren = REN
-call(function ()
+loop(function ()
     spawn(Bird, 150, 100)
     spawn(Bird, 350, 200)
     await(false)

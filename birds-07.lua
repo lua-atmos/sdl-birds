@@ -55,7 +55,7 @@ function Bird (y, speed)
 end
 
 sdl.ren = REN
-call(function ()
+loop(function ()
     local birds <close> = tasks(5)
     par (
         function ()

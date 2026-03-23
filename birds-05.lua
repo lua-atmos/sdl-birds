@@ -60,7 +60,7 @@ function Bird (y, speed)
 end
 
 sdl.ren = REN
-call(function ()
+loop(function ()
     local birds = tasks(5)
     every (clock{ms=500}, function ()
         spawn_in(birds, Bird, math.random(0,480), 100 + math.random(0,100))

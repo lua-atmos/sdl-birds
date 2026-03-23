@@ -56,7 +56,7 @@ function Bird (y, speed)
 end
 
 sdl.ren = REN
-call(function ()
+loop(function ()
     while true do
         local _ <close> = spawn(Bird, 150, 100)
         local _ <close> = spawn(Bird, 350, 200)
