@@ -8,8 +8,8 @@ An [Atmos][atmos] + [atmos-env-sdl][env-sdl] tutorial in 11 steps.
 # Install
 
 ```
-sudo luarocks --lua-version=5.4 install atmos 0.6
-sudo luarocks --lua-version=5.4 install atmos-env-sdl 0.1
+sudo luarocks --lua-version=5.4 install atmos 0.7
+sudo luarocks --lua-version=5.4 install atmos-env-sdl 0.2
 ```
 
 # Run
