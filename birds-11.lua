@@ -3,7 +3,6 @@ local SDL = require "SDL"
 local IMG = require "SDL.image"
 
 local point_vs_rect = sdl.point_vs_rect
-local evt_vs_key    = sdl.evt_vs_key
 
 local _,REN = sdl.window {
 	title  = "Birds - 11 (pause)",
@@ -41,7 +40,8 @@ function Bird (y, speed)
             par (
                 function ()
                     local ang = 0
-                    every('clock', function (_,ms)
+                    every('clock', function (us)
+                        local ms = us / 1000
                         local v = ms * speed
                         rect.x = rect.x + (v/1000)
                         rect.y = y - ((speed/5) * math.sin(ang))
@@ -60,8 +60,8 @@ function Bird (y, speed)
         task().alive = false
         watching(function () return rect.y>480-H end, function ()
             par(function ()
-                every('clock', function (_,ms)
-                    rect.y = rect.y + (ms * 0.5)
+                every('clock', function (us)
+                    rect.y = rect.y + ((us / 1000) * 0.5)
                 end)
             end, function ()
                 every('sdl.draw', function ()
@@ -69,10 +69,10 @@ function Bird (y, speed)
                 end)
             end)
         end)
-        watching(clock{s=1}, function ()
+        watching(1*_s_, function ()
             while true do
-                await(clock{ms=100})
-                watching(clock{ms=100}, function ()
+                await(100*_ms_)
+                watching(100*_ms_, function ()
                     every('sdl.draw', function ()
                         REN:copy(DN, nil, sdl.ints(rect))
                     end)
@@ -89,12 +89,12 @@ loop(function ()
             local birds <close> = tasks(5)
             par (
                 function ()
-                    every (clock{ms=500}, function ()
+                    every (500*_ms_, function ()
                         spawn_in(birds, Bird, math.random(0,480), 100 + math.random(0,100))
                     end)
                 end,
                 function ()
-                    every ('clock', function (ms)
+                    every ('clock', function ()
                         for _,b1 in getmetatable(birds).__pairs(birds) do
                             for _,b2 in getmetatable(birds).__pairs(birds) do
                                 local col = (b1~=b2) and b1.alive and b2.alive and SDL.hasIntersection(sdl.ints(b1.rect), sdl.ints(b2.rect))
@@ -110,7 +110,7 @@ loop(function ()
                 function ()
                     while true do
                         local _,_,bird = catch ('Track', function ()
-                            every (SDL.event.MouseButtonDown, function (evt)
+                            every ({tag='sdl', type=SDL.event.MouseButtonDown}, function (evt)
                                 for _,b in getmetatable(birds).__pairs(birds) do
                                     if b.alive and point_vs_rect(evt,b.rect) then
                                         throw('Track', b)
@@ -136,9 +136,9 @@ loop(function ()
         end)
     end, function ()
         while true do
-            await(SDL.event.KeyDown, function (e) return evt_vs_key(e,'P') end)
-            emit('Show', false)
-            watching(SDL.event.KeyDown, function (e) return evt_vs_key(e,'P') end, function ()
+            await{tag='sdl', type=SDL.event.KeyDown, name='P'}
+            emit{tag='Show', false}
+            watching({tag='sdl', type=SDL.event.KeyDown, name='P'}, function ()
                 local sfc = assert(IMG.load("res/pause.png"))
                 local img = assert(REN:createTextureFromSurface(sfc))
                 local _,_,w,h = img:query()
@@ -151,7 +151,7 @@ loop(function ()
                     REN:copy(img, nil, sdl.ints(r))
                 end)
             end)
-            emit('Show', true)
+            emit{tag='Show', true}
         end
     end)
 end)

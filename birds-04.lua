@@ -35,7 +35,8 @@ function Bird (y, speed)
     par (
         function ()
             local ang = 0
-            every('clock', function (_,ms)
+            every('clock', function (us)
+                local ms = us / 1000
                 local v = ms * speed
                 xx = xx + (v/1000)
                 yy = y - ((speed/5) * math.sin(ang))
@@ -60,7 +61,7 @@ end
 sdl.ren = REN
 loop(function ()
     local birds = tasks(5)
-    every (clock{ms=500}, function ()
+    every (500*_ms_, function ()
         spawn_in(birds, Bird, math.random(0,480), 100 + math.random(0,100))
     end)
 end)

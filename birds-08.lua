@@ -38,7 +38,8 @@ function Bird (y, speed)
             par (
                 function ()
                     local ang = 0
-                    every('clock', function (_,ms)
+                    every('clock', function (us)
+                        local ms = us / 1000
                         local v = ms * speed
                         rect.x = rect.x + (v/1000)
                         rect.y = y - ((speed/5) * math.sin(ang))
@@ -57,7 +58,8 @@ function Bird (y, speed)
         task().alive = false
         watching(function () return rect.y>480-H/2 end, function ()
             par(function ()
-                every('clock', function (_,ms)
+                every('clock', function (us)
+                    local ms = us / 1000
                     rect.y = rect.y + (ms * 0.5)
                 end)
             end, function ()
@@ -74,12 +76,12 @@ loop(function ()
     local birds <close> = tasks(5)
     par (
         function ()
-            every (clock{ms=500}, function ()
+            every (500*_ms_, function ()
                 spawn_in(birds, Bird, math.random(0,480), 100 + math.random(0,100))
             end)
         end,
         function ()
-            every ('clock', function (_,ms)
+            every ('clock', function ()
                 for _,b1 in getmetatable(birds).__pairs(birds) do
                     for _,b2 in getmetatable(birds).__pairs(birds) do
                         local col = (b1~=b2) and SDL.hasIntersection(sdl.ints(b1.rect), sdl.ints(b2.rect))

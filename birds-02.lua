@@ -33,7 +33,8 @@ function Bird (y, speed)
     par (
         function ()
             local ang = 0
-            every('clock', function (_,ms)
+            every('clock', function (us)
+                local ms = us / 1000
                 local v = ms * speed
                 xx = xx + (v/1000)
                 yy = y - ((speed/5) * math.sin(ang))
@@ -60,6 +61,6 @@ loop(function ()
     while true do
         local _ <close> = spawn(Bird, 150, 100)
         local _ <close> = spawn(Bird, 350, 200)
-        await(SDL.event.MouseButtonDown)
+        await{tag='sdl', type=SDL.event.MouseButtonDown}
     end
 end)
