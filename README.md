@@ -15,6 +15,6 @@ sudo luarocks --lua-version=5.4 install atmos-env-sdl 0.2
 # Run
 
 ```
-git checkout v0.4
+git checkout v0.5
 lua5.4 birds-11.lua
 ```
