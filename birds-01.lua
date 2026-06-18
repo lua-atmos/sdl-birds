@@ -26,14 +26,14 @@ local W,H; do
     W,H = a,b
 end
 
-function Bird (y, speed)
+local Bird = task(function (y, speed)
     local xx  = 0
     local yy  = y
     local img = DN
     par (
         function ()
             local ang = 0
-            every('clock', function (us)
+            loop_on('clock', function (us)
                 local ms = us / 1000
                 local v = ms * speed
                 xx = xx + (v/1000)
@@ -44,7 +44,7 @@ function Bird (y, speed)
             end)
         end,
         function ()
-            every('sdl.draw', function ()
+            loop_on('sdl.draw', function ()
                 REN:copy(img, nil, {
                     x = math.floor(xx),
                     y = math.floor(yy),
@@ -54,7 +54,7 @@ function Bird (y, speed)
             end)
         end
     )
-end
+end)
 
 sdl.ren = REN
 loop(function ()

@@ -28,15 +28,15 @@ end
 
 math.randomseed()
 
-function Bird (y, speed)
+local Bird = task(function (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
-    task().rect = rect
+    xtask().rect = rect
     local img = DN
     watching(function(it) return rect.x>640 or it=='collided' end, function ()
         par (
             function ()
                 local ang = 0
-                every('clock', function (us)
+                loop_on('clock', function (us)
                     local ms = us / 1000
                     local v = ms * speed
                     rect.x = rect.x + (v/1000)
@@ -47,25 +47,25 @@ function Bird (y, speed)
                 end)
             end,
             function ()
-                every('sdl.draw', function ()
+                loop_on('sdl.draw', function ()
                     REN:copy(img, nil, sdl.ints(rect))
                 end)
             end
         )
     end)
-end
+end)
 
 sdl.ren = REN
 loop(function ()
     local birds <close> = tasks(5)
     par (
         function ()
-            every (500*_ms_, function ()
+            loop_on (500*_ms_, function ()
                 spawn_in(birds, Bird, math.random(0,480), 100 + math.random(0,100))
             end)
         end,
         function ()
-            every ('clock', function ()
+            loop_on ('clock', function ()
                 for _,b1 in getmetatable(birds).__pairs(birds) do
                     for _,b2 in getmetatable(birds).__pairs(birds) do
                         local col = (b1~=b2) and SDL.hasIntersection(sdl.ints(b1.rect), sdl.ints(b2.rect))
