@@ -33,7 +33,7 @@ local Bird = task(function (y, speed)
     xtask().rect  = rect
     xtask().alive = true
     local img = DN
-    watching(function(it) return rect.x>640 end, function ()
+    watching({tag='until', function(it) return rect.x>640 end}, function ()
         watching('collided', function ()
             par (
                 function ()
@@ -56,7 +56,7 @@ local Bird = task(function (y, speed)
             )
         end)
         xtask().alive = false
-        watching(function () return rect.y>480-H end, function ()
+        watching({tag='until', function () return rect.y>480-H end}, function ()
             par(function ()
                 loop_on('clock', function (us)
                     local ms = us / 1000

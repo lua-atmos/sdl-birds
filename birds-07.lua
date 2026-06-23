@@ -32,7 +32,7 @@ local Bird = task(function (y, speed)
     local rect = { x=0, y=y, w=W, h=H }
     xtask().rect = rect
     local img = DN
-    watching(function(it) return rect.x>640 or it=='collided' end, function ()
+    watching({tag='until', function(it) return rect.x>640 or it=='collided' end}, function ()
         par (
             function ()
                 local ang = 0

@@ -32,7 +32,7 @@ local Bird = task(function (y, speed)
     local xx  = 0
     local yy  = y
     local img = DN
-    watching(function() return xx>640 end, function ()
+    watching({tag='until', function() return xx>640 end}, function ()
         par (
             function ()
                 local ang = 0
